@@ -22,6 +22,7 @@ namespace Utilities.Security.Test.Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddApplicationInsightsTelemetry();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 

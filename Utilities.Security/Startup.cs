@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using IdentityServer4.Stores;
-using Microsoft.ApplicationInsights.Extensibility;
 
 namespace Utilities.Security
 {
@@ -30,6 +29,7 @@ namespace Utilities.Security
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddApplicationInsightsTelemetry();
 
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
@@ -47,6 +47,8 @@ namespace Utilities.Security
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
+                configuration.DisableTelemetry = true;
             }
             else
             {
@@ -58,6 +60,13 @@ namespace Utilities.Security
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.Use(async (ctx, next) =>
+            {
+                ctx.Response.Headers.Add("Content-Security-Policy",
+                                         "default-src 'self' 'unsafe-inline' fonts.googleapis.com code.getmdl.io fonts.gstatic.com data:");
+                await next();
+            });
 
             app.UseMvc(routes =>
             {

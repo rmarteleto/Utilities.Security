@@ -1,0 +1,23 @@
+﻿@model LogoutViewModel
+
+    <div class="logout-page">
+        <div class="mdl-layout mdl-js-layout">
+            <main class="mdl-layout__content Aligner">
+                <div class="mdl-card mdl-shadow--6dp Aligner-item">
+                    <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+                        <h3 class="mdl-card__title-text">Logout</h3>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+
+                        <p>Would you like to logout?</p>
+                        <form asp-action="Logout">
+                            <input type="hidden" name="logoutId" value="@Model.LogoutId" />
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Yes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>

@@ -1,0 +1,42 @@
+﻿@model LoggedOutViewModel
+
+@{ 
+    // set this so the layout rendering sees an anonymous user
+    ViewData["signed-out"] = true;
+}
+
+    <div class="page-header logged-out">
+        <div class="mdl-layout mdl-js-layout">
+            <main class="mdl-layout__content Aligner">
+                <div class="mdl-card mdl-shadow--6dp Aligner-item">
+                    <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+                        <h3 class="mdl-card__title-text">Logout</h3>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+
+                        <p>You are now logged out</p>
+                        @if (Model.PostLogoutRedirectUri != null)
+                        {
+                            <div>
+                                Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the
+                                <span>@Model.ClientName</span> application.
+                            </div>
+                        }
+
+                        @if (Model.SignOutIframeUrl != null)
+                        {
+                            <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
+                        }
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+@section scripts
+{
+    @if (Model.AutomaticRedirectAfterSignOut)
+    {
+        <script src="~/js/signout-redirect.js"></script>
+    }
+}
